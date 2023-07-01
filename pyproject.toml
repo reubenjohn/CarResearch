@@ -10,7 +10,12 @@ python = "^3.10"
 requests-html = "^0.10.0"
 
 
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.0"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
+[tool.poetry.scripts]
+scrape-listing="car_research.scrape.kbb_listing"
