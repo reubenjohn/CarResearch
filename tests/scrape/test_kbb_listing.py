@@ -3,8 +3,7 @@ from unittest import TestCase
 
 import pytest
 
-from car_researcher.scrape.kbb_listing import scrape_kbb_listing
-from car_researcher.scrape.kbb_listing import KBBListing
+from car_researcher.scrape.kbb_listing import KBBListing, Mileage, scrape_kbb_listing
 from tests.scrape.fetch import StatelessTestVectorFetcher
 
 
@@ -15,4 +14,4 @@ class Test(TestCase):
 
     def test_scrape_kbb_listing(self):
         listing = scrape_kbb_listing('kbb_listing', StatelessTestVectorFetcher())
-        self.assertEqual(listing, KBBListing(43_293))
+        self.assertEqual(listing, KBBListing(43_293, 'Hybrid: Gas/Electric', Mileage(43, 37)))

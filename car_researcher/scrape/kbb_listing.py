@@ -2,22 +2,48 @@ import re
 from dataclasses import dataclass
 
 from car_researcher.scrape.fetch import Fetcher, RequestsHtmlFetcher
-from car_researcher.scrape.scrape_utils import assert_unique, first_non_none, parse_int
+from car_researcher.scrape.scrape_utils import assert_unique, parse_int, remove_redundant_whitespace
 
 MILES_REGEX = re.compile('([0-9,]+) miles')
+MPG_REGEX = re.compile('([0-9]+) City / ([0-9]+) Highway')
+WHITESPACE = re.compile('\s+')
+
+
+@dataclass
+class Mileage:
+    city: int
+    highway: int
 
 
 @dataclass
 class KBBListing:
     miles: int
+    engine_description: str
+    mpg: Mileage
 
 
 def scrape_kbb_listing(url: str, fetcher: Fetcher):
     html = fetcher.get(url)
-    miles_icon = assert_unique(html.find_all('div', attrs={'aria-label': 'MILEAGE'}))
-    miles = first_non_none(MILES_REGEX.match(sib.string) for sib in miles_icon.parent.next_siblings)[1]
+
+    miles = MILES_REGEX.match(scrape_icon_field(html, 'MILEAGE'))[1]
     miles = parse_int(miles)
-    return KBBListing(miles)
+
+    mpg_text = scrape_icon_field(html, 'MPG').replace('\w', ' ')
+    mpg_text = remove_redundant_whitespace(mpg_text)
+    mpg_city, mpg_hwy = MPG_REGEX.match(mpg_text).groups()
+    mpg = Mileage(int(mpg_city), int(mpg_hwy))
+
+    return KBBListing(miles=miles,
+                      engine_description=scrape_icon_field(html, 'ENGINE_DESCRIPTION'),
+                      mpg=mpg)
+
+
+def scrape_icon_field(html, aria_label):
+    miles_icon = assert_unique(html.find_all('div', attrs={'aria-label': aria_label}))
+    for sib in miles_icon.parent.next_siblings:
+        if sib.name == 'div' and sib.attrs == {'class': ['col-xs-10', 'margin-bottom-0']}:
+            return sib.string or next(sib.stripped_strings)
+    raise AssertionError(f"Icon field siblings don't match: {list(miles_icon.parent.next_siblings)}")
 
 
 def main():

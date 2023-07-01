@@ -1,7 +1,10 @@
+import re
 from re import Match
-from typing import Any, Iterable, Callable
+from typing import Any, Iterable
 
 from bs4 import ResultSet, Tag
+
+WHITESPACES = re.compile('\s+')
 
 
 def assert_unique(l: ResultSet) -> Tag:
@@ -22,3 +25,7 @@ def first_non_none(iter: Iterable) -> Any:
 
 def parse_int(miles: str) -> int:
     return int(miles.replace(',', ''))
+
+
+def remove_redundant_whitespace(s: str) -> str:
+    return WHITESPACES.sub(' ', s)
