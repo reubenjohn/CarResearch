@@ -20,7 +20,7 @@ class StatelessTestVectorFetcher(Fetcher):
         html_path = os.path.realpath(f'{VECTORS_PATH}/{url}.html')
         logging.info(f"Reading test vector: {html_path}")
         with open(html_path) as html_file:
-            return BeautifulSoup(''.join(html_file.readlines()))
+            return BeautifulSoup(''.join(html_file.readlines()), features='html.parser')
 
     def render(self):
         html_path = os.path.realpath(f'{VECTORS_PATH}/{self._url}.rendered.html')
