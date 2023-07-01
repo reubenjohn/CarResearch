@@ -6,7 +6,7 @@ authors = ["Reuben John <rmjohn2@ncsu.edu>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.6"
 requests-html = "^0.10.0"
 
 
