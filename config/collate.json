@@ -1,0 +1,11 @@
+{
+  "data_locations": {
+    "search_results": {
+      "storage": "google-sheets",
+      "sheet_range": {
+        "id": "15LhTPyE5R3d_Gj7sNtR9eLZgZqtJ9buAN8iwL3HYktY",
+        "range": "Search Scrape!A1:AZ1"
+      }
+    }
+  }
+}

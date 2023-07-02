@@ -37,7 +37,9 @@ class ListItem:
     seller_name: str
     seller_phone: str
     seller_address: str
-    price_ribbon: str
+
+    def json(self) -> str:
+        return json.dumps(self.__dict__)
 
 
 def scrape_kbb_search(url: str, fetcher: Fetcher):
@@ -78,14 +80,9 @@ def scrape_list_item(item: bs4.Tag):
     seller_phone = seller['telephone']
     address = seller['address']
     seller_address = f"{address['streetAddress']}\n{address['addressLocality']}, {address['addressRegion']} {address['postalCode']}"
-    price_ribbon = PriceRibbon.NONE
-    if item.findChildren(string='GREAT PRICE'):
-        price_ribbon = PriceRibbon.GREAT
-    elif item.findChild(string='GOOD PRICE'):
-        price_ribbon = PriceRibbon.GOOD
 
     return ListItem(vin, title, listing_url, image_url, price, production_year, brand_name, model_name, miles,
-                    mileage_city, mileage_hwy, drive, color, seller_name, seller_phone, seller_address, price_ribbon)
+                    mileage_city, mileage_hwy, drive, color, seller_name, seller_phone, seller_address)
 
 
 def main():
@@ -98,7 +95,7 @@ def main():
 
     args = parser.parse_args()
     results = scrape_kbb_search(args.url, RequestsHtmlFetcher())
-    print(results)
+    print([r.json() for r in results])
 
 
 # Press the green button in the gutter to run the script.
