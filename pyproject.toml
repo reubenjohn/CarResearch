@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "carresearch"
+name = "car_researcher"
 version = "0.1.0"
-description = ""
+description = "Automates some of the car researching process in the US market through web scraping"
 authors = ["Reuben John <rmjohn2@ncsu.edu>"]
 readme = "README.md"
 
@@ -19,5 +19,5 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-scrape-listing = "car_research.scrape.kbb_listing:main"
-scrape-search = "car_research.scrape.kbb_search:main"
+scrape-listing = "car_researcher.scrape.kbb_listing:main"
+scrape-search = "car_researcher.scrape.kbb_search:main"
