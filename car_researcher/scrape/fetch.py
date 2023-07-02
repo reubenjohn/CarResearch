@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from time import sleep
 from typing import Tuple
 
 from bs4 import BeautifulSoup
@@ -38,6 +39,7 @@ class RequestsHtmlFetcher(Fetcher):
             element_located = lambda *locator: wait.until(expected_conditions.presence_of_element_located(*locator))
             for _ in range(10):
                 try:
+                    sleep(.1)  # To avoid referencing the html from the previous page below
                     element_located((By.TAG_NAME, 'html')).send_keys(Keys.END)
                     if element_located(completion_locator):
                         return BeautifulSoup(self._driver.page_source, features='html.parser')
