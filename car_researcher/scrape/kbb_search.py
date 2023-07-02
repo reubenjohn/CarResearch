@@ -7,8 +7,8 @@ import bs4
 from selenium.webdriver.common.by import By
 
 from car_researcher.scrape.fetch import Fetcher, RequestsHtmlFetcher
-from scrape.kbb_listing import MPG_REGEX
-from scrape.scrape_utils import parse_int
+from car_researcher.scrape.kbb_listing import MPG_REGEX
+from car_researcher.scrape.scrape_utils import parse_int
 
 VEHICLE_DETAILS_REGEX = re.compile('listingId=([0-9]+)')
 
