@@ -28,4 +28,4 @@ def parse_int(miles: str) -> int:
 
 
 def remove_redundant_whitespace(s: str) -> str:
-    return WHITESPACES.sub(' ', s)
+    return WHITESPACES.sub(' ', s).strip()

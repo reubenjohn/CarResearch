@@ -1,5 +1,6 @@
 import logging
 import os.path
+from typing import Tuple
 
 from bs4 import BeautifulSoup
 
@@ -13,7 +14,7 @@ class StatelessTestVectorFetcher(Fetcher):
         self._rendered_response = None
         self._url = None
 
-    def get(self, url: str) -> BeautifulSoup:
+    def proxy_get(self, url: str, completion_locator: Tuple[str, str]) -> BeautifulSoup:
         if self._rendered_response:
             return self._rendered_response
         self._url = url

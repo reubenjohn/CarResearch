@@ -6,8 +6,9 @@ authors = ["Reuben John <rmjohn2@ncsu.edu>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.6"
-requests-html = "^0.10.0"
+python = "^3.7"
+selenium = "^4.10.0"
+beautifulsoup4 = "^4.12.2"
 
 
 [tool.poetry.group.dev.dependencies]

@@ -1,27 +1,51 @@
 from abc import ABC, abstractmethod
+from typing import Tuple
 
 from bs4 import BeautifulSoup
-from requests_html import HTMLSession
+from selenium import webdriver
+from selenium.common import TimeoutException
+from selenium.webdriver import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.wait import WebDriverWait
 
 
 class Fetcher(ABC):
     @abstractmethod
-    def get(self, url: str) -> BeautifulSoup:
+    def proxy_get(self, url: str, completion_locator: Tuple[str, str]) -> BeautifulSoup:
         pass
 
     @abstractmethod
-    def render(self):
+    def render(self, **kwargs):
         pass
 
 
 class RequestsHtmlFetcher(Fetcher):
     def __init__(self):
-        self._session = HTMLSession()
         self._response = None
+        self._driver = webdriver.Edge()
 
-    def get(self, url: str) -> BeautifulSoup:
-        self._response = self._session.get(url)
-        return BeautifulSoup(self._response.html.html, features='html.parser')
+    def proxy_get(self, url: str, completion_locator: Tuple[str, str]) -> BeautifulSoup:
+        self._driver.get('https://www.croxyproxy.net/')
+        try:
+            wait = WebDriverWait(self._driver, 10)
+            element_located = lambda *locator: wait.until(expected_conditions.presence_of_element_located(*locator))
 
-    def render(self):
-        self._response.html.render()
+            element_located((By.ID, 'url')).send_keys(url)
+            element_located((By.ID, 'requestSubmit')).click()
+
+            wait = WebDriverWait(self._driver, 1)
+            element_located = lambda *locator: wait.until(expected_conditions.presence_of_element_located(*locator))
+            for _ in range(10):
+                try:
+                    element_located((By.TAG_NAME, 'html')).send_keys(Keys.END)
+                    if element_located(completion_locator):
+                        return BeautifulSoup(self._driver.page_source, features='html.parser')
+                except TimeoutException:
+                    pass
+            raise RuntimeError("Completion condition could not be achieved")
+        finally:
+            self._driver.quit()
+
+    def render(self, **kwargs):
+        self._response.html.render(**kwargs)
