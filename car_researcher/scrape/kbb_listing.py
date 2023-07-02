@@ -10,7 +10,6 @@ from car_researcher.scrape.scrape_utils import assert_unique, parse_int, remove_
 
 MILES_REGEX = re.compile('([0-9,]+) miles')
 MPG_REGEX = re.compile('([0-9]+) City / ([0-9]+) Highway')
-WHITESPACE = re.compile('\s+')
 
 
 @dataclass

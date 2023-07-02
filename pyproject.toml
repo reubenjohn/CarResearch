@@ -19,4 +19,5 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-scrape-listing="car_research.scrape.kbb_listing"
+scrape-listing = "car_research.scrape.kbb_listing:main"
+scrape-search = "car_research.scrape.kbb_search:main"
