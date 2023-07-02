@@ -15,7 +15,7 @@ class Test(TestCase):
     def test_json_serializable(self):
         self.assertEqual(
             '{"vin": "3GCPDBEK9PG268088", "title": "New 2023 Chevrolet Silverado 1500 Custom", "listing_url": "https://www.kbb.com/cars-for-sale/vehicledetails.xhtml?listingId=679456113", "image_url": "https://atcimages.kbb.com/hn/c/22b69d9d44fb40bdb36cbe50d1842c0e.jpg", "price_usd": 45460, "production_year": 2023, "brand_name": "Chevrolet", "model_name": "Silverado 1500", "miles": 8, "city_mpg": 18, "hwy_mpg": 21, "wheel_drive": "4 Wheel Drive", "color": "Gray", "seller_name": "Landers McLarty Chevrolet", "seller_phone": "2567156557", "seller_address": "4930 University Drive\\nHuntsville, AL 35816", "price_ribbon": "NONE"}',
-            json.dumps(EXPECTED_RESULTS[0].__dict__),
+            EXPECTED_RESULTS[0].json(),
             'Is serializable to JSON')
 
 

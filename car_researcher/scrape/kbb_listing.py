@@ -1,3 +1,4 @@
+import json
 import re
 from dataclasses import dataclass
 from typing import List
@@ -32,6 +33,12 @@ class KBBListing:
     drive_type: str
     transmission: str
     vehicle_features: List[VehicleFeature]
+
+    def json(self) -> str:
+        d = self.__dict__
+        d['mpg'] = self.mpg.__dict__
+        d['vehicle_features'] = [feats.__dict__ for feats in self.vehicle_features]
+        return json.dumps(d)
 
 
 def scrape_kbb_listing(url: str, fetcher: Fetcher):
@@ -87,7 +94,7 @@ def main():
 
     args = parser.parse_args()
     listing = scrape_kbb_listing(args.url, RequestsHtmlFetcher())
-    print(listing)
+    print(listing.json())
 
 
 # Press the green button in the gutter to run the script.

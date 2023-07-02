@@ -39,6 +39,9 @@ class ListItem:
     seller_address: str
     price_ribbon: str
 
+    def json(self) -> str:
+        return json.dumps(self.__dict__)
+
 
 def scrape_kbb_search(url: str, fetcher: Fetcher):
     html = fetcher.proxy_get(url, (By.XPATH, '//h2[contains(text(), "Expert Reviews")]'))
@@ -98,7 +101,7 @@ def main():
 
     args = parser.parse_args()
     results = scrape_kbb_search(args.url, RequestsHtmlFetcher())
-    print(results)
+    print([r.json() for r in results])
 
 
 # Press the green button in the gutter to run the script.
