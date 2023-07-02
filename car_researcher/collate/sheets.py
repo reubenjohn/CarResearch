@@ -25,18 +25,6 @@ class SheetRange:
     range: str
 
 
-class SheetManip:
-    def __init__(self, sheet, spreadsheet_id: str):
-        self.sheet = sheet
-        self.spreadsheet_id = spreadsheet_id
-
-
-def read_headers(sheet, srange: SheetRange) -> List[str]:
-    result = sheet.values().get(spreadsheetId=srange.id, range=srange.range).execute()
-    values = result.get('values', [])
-    return values[0]
-
-
 def load_config(path: str):
     with open(path) as fp:
         d = json.load(fp)
@@ -45,11 +33,27 @@ def load_config(path: str):
         return data_locations
 
 
+def read_headers(sheet, srange: SheetRange) -> List[str]:
+    result = sheet.values().get(spreadsheetId=srange.id, range=srange.range).execute()
+    values = result.get('values', [])
+    return values[0]
+
+
 def main():
     """Shows basic usage of the Sheets API.
     Prints values from a sample spreadsheet.
     """
-    ranges = load_config('config/collate.json')
+    import argparse
+    parser = argparse.ArgumentParser(
+        prog='scrape_kbb_listing',
+        description='Scrapes the key information from a KBB listing',
+        epilog='Use --help for more info')
+    parser.add_argument('config', help="JSON file containing details of the target spreadsheet")
+
+    args = parser.parse_args()
+
+    ranges = load_config(args.config)
+
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
