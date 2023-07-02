@@ -1,4 +1,3 @@
-import json
 from unittest import TestCase
 
 from car_researcher.scrape.kbb_search import scrape_kbb_search, ListItem, PriceRibbon

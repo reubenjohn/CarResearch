@@ -1,4 +1,3 @@
-import json
 from unittest import TestCase
 
 from car_researcher.scrape.kbb_listing import KBBListing, Mileage, scrape_kbb_listing, VehicleFeature
