@@ -9,6 +9,9 @@ readme = "README.md"
 python = "^3.7"
 selenium = "^4.10.0"
 beautifulsoup4 = "^4.12.2"
+google-api-python-client = "^2.91.0"
+google-auth-httplib2 = "^0.1.0"
+google-auth-oauthlib = "^1.0.0"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -21,3 +24,4 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.scripts]
 scrape-listing = "car_researcher.scrape.kbb_listing:main"
 scrape-search = "car_researcher.scrape.kbb_search:main"
+sheets-append = "car_researcher.collate.sheets:main"
