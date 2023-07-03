@@ -14,7 +14,7 @@ class StatelessTestVectorFetcher(Fetcher):
         self._rendered_response = None
         self._url = None
 
-    def proxy_get(self, url: str, completion_locator: Tuple[str, str]) -> BeautifulSoup:
+    def proxy_get(self, url: str, completion_locator: Tuple[str, str], use_proxy=False) -> BeautifulSoup:
         if self._rendered_response:
             return self._rendered_response
         self._url = url

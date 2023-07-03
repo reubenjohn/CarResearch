@@ -23,5 +23,6 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 scrape-listing = "car_researcher.scrape.kbb_listing:main"
+scrape-listings = "car_researcher.scrape.kbb_listings:main"
 scrape-search = "car_researcher.scrape.kbb_search:main"
 sheets-append = "car_researcher.collate.sheets:main"

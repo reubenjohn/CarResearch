@@ -27,6 +27,7 @@ class VehicleFeature:
 
 @dataclass
 class KBBListing:
+    url: str
     miles: int
     engine_description: str
     mpg: Mileage
@@ -41,8 +42,8 @@ class KBBListing:
         return json.dumps(d)
 
 
-def scrape_kbb_listing(url: str, fetcher: Fetcher):
-    html = fetcher.proxy_get(url, (By.XPATH, '//a[@data-cmp="ownerWebsiteCTA"]'))
+def scrape_kbb_listing(url: str, fetcher: Fetcher, use_proxy=False) -> KBBListing:
+    html = fetcher.proxy_get(url, (By.XPATH, '//a[@data-cmp="ownerWebsiteCTA"]'), use_proxy=use_proxy)
 
     miles = MILES_REGEX.match(scrape_icon_field(html, 'MILEAGE'))[1]
     miles = parse_int(miles)
@@ -60,7 +61,7 @@ def scrape_kbb_listing(url: str, fetcher: Fetcher):
     features = scrape_features_accordions(html)
     features = [VehicleFeature(name, feats) for name, feats in features]
 
-    return KBBListing(miles=miles,
+    return KBBListing(url=url, miles=miles,
                       engine_description=engine_description,
                       mpg=mpg, drive_type=drive_type, transmission=transmission, vehicle_features=features)
 

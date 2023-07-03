@@ -7,13 +7,13 @@ from tests.scrape.fetch import StatelessTestVectorFetcher
 class Test(TestCase):
     def test_scrape_kbb_listing(self):
         listing = scrape_kbb_listing('kbb_listing', StatelessTestVectorFetcher())
-        self.assertEqual(listing, KBBListing(43_293, 'Hybrid: Gas/Electric', Mileage(43, 37), 'All wheel drive',
+        self.assertEqual(listing, KBBListing('kbb_listing', 43_293, 'Hybrid: Gas/Electric', Mileage(43, 37), 'All wheel drive',
                                              'Continuously Variable Automatic Transmission', EXPECTED_VEHICLE_FEATURES))
 
     def test_json_serializable(self):
         self.assertEqual(
-            '{"miles": 43293, "engine_description": "Hybrid: Gas/Electric", "mpg": {"city": 43, "highway": 37}, "drive_type": "All wheel drive", "transmission": "Continuously Variable Automatic Transmission", "vehicle_features": [{"name": "Titanium Premium Package (Discontinued)", "features": ["power open/close w/power shade", "Panoramic Vista Roof", "Head-Up Display", "Includes Black Roof-Rack Side Rails"]}]}',
-            KBBListing(43_293, 'Hybrid: Gas/Electric', Mileage(43, 37), 'All wheel drive',
+            '{"url": "kbb.com/asd", "miles": 43293, "engine_description": "Hybrid: Gas/Electric", "mpg": {"city": 43, "highway": 37}, "drive_type": "All wheel drive", "transmission": "Continuously Variable Automatic Transmission", "vehicle_features": [{"name": "Titanium Premium Package (Discontinued)", "features": ["power open/close w/power shade", "Panoramic Vista Roof", "Head-Up Display", "Includes Black Roof-Rack Side Rails"]}]}',
+            KBBListing('kbb.com/asd', 43_293, 'Hybrid: Gas/Electric', Mileage(43, 37), 'All wheel drive',
                        'Continuously Variable Automatic Transmission', EXPECTED_VEHICLE_FEATURES[-1:]).json(),
             'Is serializable to JSON')
 

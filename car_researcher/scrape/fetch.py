@@ -13,7 +13,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 class Fetcher(ABC):
     @abstractmethod
-    def proxy_get(self, url: str, completion_locator: Tuple[str, str]) -> BeautifulSoup:
+    def proxy_get(self, url: str, completion_locator: Tuple[str, str], use_proxy=False) -> BeautifulSoup:
         pass
 
     @abstractmethod
@@ -26,30 +26,30 @@ class RequestsHtmlFetcher(Fetcher):
         self._response = None
         self._driver = webdriver.Edge()
 
-    def proxy_get(self, url: str, completion_locator: Tuple[str, str], via_proxy=False) -> BeautifulSoup:
-        self._driver.get(url)
-        try:
-            wait = WebDriverWait(self._driver, 10)
+    def proxy_get(self, url: str, completion_locator: Tuple[str, str], use_proxy=False) -> BeautifulSoup:
+        wait = WebDriverWait(self._driver, 10)
 
-            if via_proxy:
-                element_located = lambda *locator: wait.until(expected_conditions.presence_of_element_located(*locator))
+        if use_proxy:
+            self._driver.get('https://www.croxyproxy.net/')
 
-                element_located((By.ID, 'url')).send_keys(url)
-                element_located((By.ID, 'requestSubmit')).click()
-
-            wait = WebDriverWait(self._driver, 1)
             element_located = lambda *locator: wait.until(expected_conditions.presence_of_element_located(*locator))
-            for _ in range(10):
-                try:
-                    sleep(.1)  # To avoid referencing the html from the previous page below
-                    element_located((By.TAG_NAME, 'html')).send_keys(Keys.END)
-                    if element_located(completion_locator):
-                        return BeautifulSoup(self._driver.page_source, features='html.parser')
-                except TimeoutException:
-                    pass
-            raise RuntimeError("Completion condition could not be achieved")
-        finally:
-            self._driver.quit()
+
+            element_located((By.ID, 'url')).send_keys(url.strip())
+            element_located((By.ID, 'requestSubmit')).click()
+        else:
+            self._driver.get(url.strip())
+
+        wait = WebDriverWait(self._driver, 1)
+        element_located = lambda *locator: wait.until(expected_conditions.presence_of_element_located(*locator))
+        for _ in range(10):
+            try:
+                sleep(.1)  # To avoid referencing the html from the previous page below
+                element_located((By.TAG_NAME, 'html')).send_keys(Keys.END)
+                if element_located(completion_locator):
+                    return BeautifulSoup(self._driver.page_source, features='html.parser')
+            except TimeoutException:
+                pass
+        raise RuntimeError("Completion condition could not be achieved")
 
     def render(self, **kwargs):
         self._response.html.render(**kwargs)
