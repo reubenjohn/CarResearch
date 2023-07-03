@@ -95,7 +95,7 @@ def main():
 
     args = parser.parse_args()
     results = scrape_kbb_search(args.url, RequestsHtmlFetcher())
-    print([r.json() for r in results])
+    print(f'[{",".join([r.json() for r in results])}]')
 
 
 # Press the green button in the gutter to run the script.

@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 import json
+import logging
 import os.path
 from dataclasses import dataclass
 from typing import List
@@ -33,10 +34,31 @@ def load_config(path: str):
         return data_locations
 
 
-def read_headers(sheet, srange: SheetRange) -> List[str]:
+def fetch_headers(sheet, srange: SheetRange) -> List[str]:
     result = sheet.values().get(spreadsheetId=srange.id, range=srange.range).execute()
     values = result.get('values', [])
     return values[0]
+
+
+def objects_to_rows(headers: List[str], objects: List[dict]):
+    objects_keys = set()
+    values = []
+    for obj in objects:
+        objects_keys.union(obj.keys())
+        values.append([obj[k] for k in headers if k in obj])
+
+    extraneous = objects_keys.difference(headers)
+    if extraneous:
+        logging.warning(f"Extraneous objects_keys found in objects to append: {extraneous}")
+
+    return values
+
+
+def append_search_results(sheet, headers_range: SheetRange, data_range: SheetRange, objects: List[dict]):
+    headers = fetch_headers(sheet, headers_range)
+    values = objects_to_rows(headers, objects)
+    sheet.values().append(spreadsheetId=data_range.id, range=data_range.range, valueInputOption="RAW",
+                          body={'values': values}).execute()
 
 
 def main():
@@ -49,10 +71,13 @@ def main():
         description='Scrapes the key information from a KBB listing',
         epilog='Use --help for more info')
     parser.add_argument('config', help="JSON file containing details of the target spreadsheet")
+    parser.add_argument('data', help="JSON file containing the data to be appended")
 
     args = parser.parse_args()
 
     ranges = load_config(args.config)
+    with open(args.data) as data_file:
+        data = json.load(data_file)
 
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
@@ -77,7 +102,7 @@ def main():
 
         # Call the Sheets API
         sheet = service.spreadsheets()
-        print(read_headers(sheet, ranges['search_results']))
+        append_search_results(sheet, ranges['search_result_headers'], ranges['search_result_data'], data)
 
     except HttpError as err:
         print(err)

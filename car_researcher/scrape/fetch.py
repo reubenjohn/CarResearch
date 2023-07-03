@@ -26,14 +26,16 @@ class RequestsHtmlFetcher(Fetcher):
         self._response = None
         self._driver = webdriver.Edge()
 
-    def proxy_get(self, url: str, completion_locator: Tuple[str, str]) -> BeautifulSoup:
-        self._driver.get('https://www.croxyproxy.net/')
+    def proxy_get(self, url: str, completion_locator: Tuple[str, str], via_proxy=False) -> BeautifulSoup:
+        self._driver.get(url)
         try:
             wait = WebDriverWait(self._driver, 10)
-            element_located = lambda *locator: wait.until(expected_conditions.presence_of_element_located(*locator))
 
-            element_located((By.ID, 'url')).send_keys(url)
-            element_located((By.ID, 'requestSubmit')).click()
+            if via_proxy:
+                element_located = lambda *locator: wait.until(expected_conditions.presence_of_element_located(*locator))
+
+                element_located((By.ID, 'url')).send_keys(url)
+                element_located((By.ID, 'requestSubmit')).click()
 
             wait = WebDriverWait(self._driver, 1)
             element_located = lambda *locator: wait.until(expected_conditions.presence_of_element_located(*locator))

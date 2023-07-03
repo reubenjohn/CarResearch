@@ -1,10 +1,17 @@
 {
   "data_locations": {
-    "search_results": {
+    "search_result_headers": {
       "storage": "google-sheets",
       "sheet_range": {
         "id": "15LhTPyE5R3d_Gj7sNtR9eLZgZqtJ9buAN8iwL3HYktY",
         "range": "Search Scrape!A1:AZ1"
+      }
+    },
+    "search_result_data": {
+      "storage": "google-sheets",
+      "sheet_range": {
+        "id": "15LhTPyE5R3d_Gj7sNtR9eLZgZqtJ9buAN8iwL3HYktY",
+        "range": "Search Scrape!A2:AZ"
       }
     }
   }
