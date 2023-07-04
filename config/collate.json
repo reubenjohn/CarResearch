@@ -4,14 +4,28 @@
       "storage": "google-sheets",
       "sheet_range": {
         "id": "15LhTPyE5R3d_Gj7sNtR9eLZgZqtJ9buAN8iwL3HYktY",
-        "range": "Search Scrape!A1:AZ1"
+        "range": "ScrapeSearch!A1:AZ1"
       }
     },
     "search_result_data": {
       "storage": "google-sheets",
       "sheet_range": {
         "id": "15LhTPyE5R3d_Gj7sNtR9eLZgZqtJ9buAN8iwL3HYktY",
-        "range": "Search Scrape!A2:AZ"
+        "range": "ScrapeSearch!A2:AZ"
+      }
+    },
+    "listing_headers": {
+      "storage": "google-sheets",
+      "sheet_range": {
+        "id": "15LhTPyE5R3d_Gj7sNtR9eLZgZqtJ9buAN8iwL3HYktY",
+        "range": "ScrapeListing!A1:AZ1"
+      }
+    },
+    "listing_data": {
+      "storage": "google-sheets",
+      "sheet_range": {
+        "id": "15LhTPyE5R3d_Gj7sNtR9eLZgZqtJ9buAN8iwL3HYktY",
+        "range": "ScrapeListing!A2:AZ"
       }
     }
   }

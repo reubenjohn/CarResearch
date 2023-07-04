@@ -6,7 +6,7 @@ from typing import List, Iterable
 
 from car_researcher.scrape.fetch import Fetcher, RequestsHtmlFetcher
 from car_researcher.scrape.kbb_listing import scrape_kbb_listing, KBBListing
-from scrape.kbb_search import VEHICLE_DETAILS_REGEX
+from car_researcher.scrape.kbb_search import VEHICLE_DETAILS_REGEX
 
 
 def scrape_kbb_listings(urls: List[str], fetcher: Fetcher, n_workers: int = 4) -> Iterable[KBBListing]:

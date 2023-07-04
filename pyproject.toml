@@ -22,7 +22,8 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-scrape-listing = "car_researcher.scrape.kbb_listing:main"
-scrape-listings = "car_researcher.scrape.kbb_listings:main"
-scrape-search = "car_researcher.scrape.kbb_search:main"
-sheets-append = "car_researcher.collate.sheets:main"
+scrape-kbb-search = "car_researcher.scrape.kbb_search:main"
+scrape-kbb-listing = "car_researcher.scrape.kbb_listing:main"
+scrape-kbb-listings = "car_researcher.scrape.kbb_listings:main"
+collate-search = "car_researcher.collate.search:main"
+collate-kbb-listings = "car_researcher.collate.kbb_listing:main"
